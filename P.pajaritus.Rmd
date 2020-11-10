@@ -6,9 +6,20 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
+library(lme4)
 
+```
 
+```{r}
+datos <- read.csv("Datos_tarea4.csv", header = TRUE)
+str(datos)
+
+ mod1 <- lmer(D ~ H1 + (1|P), data = datos)
+ mod1
+ summary(mod1)
 
 
 ```
+
 
