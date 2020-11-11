@@ -14,6 +14,7 @@ library(ggplot2)
 ```{r}
 datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 str(datos)
+as.character(datos$P)
 
 
 ## modelo que incluye la poblaicon como efecto aleatorio
@@ -32,22 +33,28 @@ Es necesario incluir en el modelo la variación asociada a la población donde p
 # prueba con PCA
 
 Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
-Hpca
+# Hpca
 summary(Hpca)
-str(Hpca)
+# str(Hpca)
 
-Hpca$loadings[1,]
+# Hpca$loadings[1,]
 
-datos$pc1 <- Hpca$scores[,1]
-
+datos$degradacion <- Hpca$scores[,1]
 ```
 
 
 ```{r}
-
+datos$P <- as.factor(datos$P)
 ## grafico con los scores del PC1 como variable
-ggplot(datos, aes(x = D, y = pc1, color = P)) +
-  geom_point()
+ggplot(datos, aes(D, degradacion)) +
+  geom_point(alpha = 0.4, aes(color = P),  show.legend = FALSE) + 
+  geom_smooth(show.legend = FALSE)
+
+ggplot(datos, aes(x = D, y = degradacion, color = P)) +
+  geom_point(alpha = 0.5,  show.legend = FALSE) + 
+  geom_smooth(method = "lm", show.legend = FALSE) + 
+  theme_bw()
+
 
 ```
 
