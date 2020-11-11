@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 # setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
 library(lme4)
-
+library(ggplot2)
 ```
 
 ```{r}
@@ -24,6 +24,41 @@ str(datos)
 
 ```
 
+Es necesario incluir en el modelo la variación asociada a la población donde pertenece el individuo. De esta manera, es posible observar el efecto de las variables predictoras (H1, H2, H3, H4 y H5) sin que se vea enmascarada por la variación asociada a la población.
 
-El modelo permite tomar en consideración la variación que se encuentra definida por la población a la cual pertenece el individuo, para observar correctamente el efecto de las variables predictora (H1, H2, H3, H4 y H5).
+
+
+```{r}
+# prueba con PCA
+
+Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
+Hpca
+summary(Hpca)
+str(Hpca)
+
+Hpca$loadings[1,]
+
+datos$pc1 <- Hpca$scores[,1]
+
+```
+
+
+```{r}
+
+
+ggplot(datos, aes(x = D, y = pc1, color = P)) +
+  geom_point()
+
+
+
+ ggplot(data, aes(n_species)) +
+  geom_histogram() +
+  theme_bw() +
+  facet_grid(gr_functional3 ~ Region) +
+  theme(strip.background = element_blank(),
+        strip.text.y     = element_text(angle = 0,
+                                        size  = 8))
+
+```
+
 Además, de acuerdo con la correlación que se observa entre los efectos fijos, se puede notar que H5 es el parámetro de degradación de hábitat que se correlacionado más en relación con la latitud (cor = -0.478)
