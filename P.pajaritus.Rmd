@@ -45,19 +45,9 @@ datos$pc1 <- Hpca$scores[,1]
 
 ```{r}
 
-
+## grafico con los scores del PC1 como variable
 ggplot(datos, aes(x = D, y = pc1, color = P)) +
   geom_point()
-
-
-
- ggplot(data, aes(n_species)) +
-  geom_histogram() +
-  theme_bw() +
-  facet_grid(gr_functional3 ~ Region) +
-  theme(strip.background = element_blank(),
-        strip.text.y     = element_text(angle = 0,
-                                        size  = 8))
 
 ```
 
