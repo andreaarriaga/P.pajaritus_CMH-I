@@ -7,6 +7,13 @@ output: html_document
 
 
 
+```{r}
+
+require(lme4)
+require(nlme)
+require(ggplot2)
+
+```
 
 
 
@@ -131,6 +138,9 @@ tidy_dagitty(dagified)
 
 ```
 
+## Visualizar datos
+
+Relacion entre los tipos de degradacion de habitat y la diversidad de alelos
 
 ```{r}
 #Visualize data
@@ -140,11 +150,12 @@ colnames(datos)
 
 
 D = ggplot() + 
-  geom_point(data = datos, aes(D, H1), color = "red")+
-  geom_point(data = datos, aes(D, H2), color = "green")+
-  geom_point(data = datos, aes(D, H3), color = "blue")+
-  geom_point(data = datos, aes(D, H4), color = "yellow")+
-  geom_point(data = datos, aes(D, H5), color = "orange")+
+  geom_point(data = datos, aes(D, H1), color = "brown3")+
+  geom_point(data = datos, aes(D, H2), color = "darkgreen")+
+  geom_point(data = datos, aes(D, H3), color = "cyan4")+
+  geom_point(data = datos, aes(D, H4), color = "coral1")+
+  geom_point(data = datos, aes(D, H5), color = "darkorange1")+
+  labs(y="Tipos de Degradacion", x="Diversidad de alelos") +
     theme_bw()
 
 D
@@ -153,59 +164,51 @@ D
 
 ```
 
+Relacion entre la latitud y la degradacion del habitat
+
 
 ```{r}
 
 
 
 L = ggplot() + 
-  geom_point(data = datos, aes(L, H1), color = "red")+
-  geom_point(data = datos, aes(L, H2), color = "green")+
-  geom_point(data = datos, aes(L, H3), color = "blue")+
-  geom_point(data = datos, aes(L, H4), color = "yellow")+
-  geom_point(data = datos, aes(L, H5), color = "orange")+
-  theme_bw()
+  geom_point(data = datos, aes(H1, L), color = "brown3", size = 3, pch = 17)+
+  geom_point(data = datos, aes(H2, L), color = "darkgreen", size = 3, pch = 17)+
+  geom_point(data = datos, aes(H3, L), color = "cyan4", size = 3, pch = 17)+
+  geom_point(data = datos, aes(H4, L), color = "coral1", size = 3, pch = 17)+
+  geom_point(data = datos, aes(H5, L), color = "darkorange1", size = 3, pch = 17)+
+  labs(y="Latitud", x="Tipos de degradacion del Habitat") +
+    theme_bw()
 
 L
 
 
-```
-
-
-```{r}
-
-hist(datos$D)
-
-a = mean(datos$H1)
-b = mean(datos$H2)
-o = mean(datos$H3)
-d = mean(datos$H4)
-f = mean(datos$H5)
-g = mean(datos$D)
-f = range(datos$D)
-
 
 ```
 
-
+Relacion entre la DIversidad de Alelos y la latitud
 
 ```{r}
 
 
 ggplot() + 
-geom_point(data = datos, aes(y = L, x = D), color = "darkblue")
+geom_point(data = datos, aes(y = L, x = D), fill = "chocolate1", color = "black", size = 3, pch = 23)+
+labs(y="Latitud", x="Diversidad de Alelos") +
+    theme_bw()
+  
 
 
 ```
 
+## Grafico de battas: frecuencia de diversidad
 
 ```{r}
 
 
 ggplot() + 
-geom_bar(data = datos, aes(D), fill = "darkblue")
-
-
+geom_bar(data = datos, aes(D), fill = "darkblue")+
+  labs(y="Frecuencia", x="Diversidad de Alelos") +
+    theme_bw()
 
 
 
@@ -213,18 +216,17 @@ geom_bar(data = datos, aes(D), fill = "darkblue")
 
 ## Correccion de modelos
 
-En el modelo anterior se plantea varios modelos controlando por todas las variables H (de H1 a H5) por separado. Esto puede generar un error por comparaciones indireactas dando como resultado una diferencia entre las variables. 
+### Modelo 2
+
+En el modelo anterior se plantea varios modelos controlando por todas las variables H (de H1 a H5) por separado. Esto puede generar un error por comparaciones indirectas que puede resultar en un analisis equivocado de como se diferencian las variables entre si.
 
 
-Para corregir este error voy a plantear un modelo en el que se controle por todas las variables H. Tambien se controla por la variable de la poblacion. 
+Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H. Tambien se controla por la variable de la latitud ya que ambas tienen un efecto sobre la diversidad de alelos. 
 
 
 ```{r}
 
 #Modelos
-require(lme4)
-require(nlme)
-
 #todas las variables sin tomar en cuenta a P como un factor aleatorio (podria ser el correcto)
 M.2 <- lm(D ~ H1 + H2 + H3 + H4 + H5 + L, data = datos)
 summary(M.2)
