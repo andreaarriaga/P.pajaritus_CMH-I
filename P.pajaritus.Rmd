@@ -5,7 +5,74 @@ date:  "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+
+# Trampa 1
+```{r}
+
+library(lme4)
+library(ggplot2)
+datos <- read.csv("Datos_tarea4.csv", header = TRUE)
+str(datos)
 
 ```
 
+
+Se estudio  el efecto que tienen diferentes indicadores de degradación ambiental sobre  diversidad alélica (D) del complejo CMH-I de P. pajaritus
+
+Se realizaron los siguentes modelos lineales  para determinar dichos efectos. 
+
+```{r T1, include=FALSE}
+# Para H1
+h1 <- lm(D ~ H1 + A + P + L, data= datos)
+h1
+S.H1 <- summary(h1)
+S.H1
+
+# Para H2
+h2 <- lm(D ~ H2+ A + P + L, data=datos)
+
+h2
+S.H2 <- summary(h2)
+S.H2
+# Para H3
+h3 <- lm(D ~ H3+ A + P + L, data=datos)
+h3
+
+S.H3 <- summary(h3)
+S.H3
+
+# Para H4
+h4 <- lm(D ~ H4+ A + P + L, data=datos)
+h4
+S.H4 <- summary(h4) 
+S.H4
+
+#Para H5 
+h5 <- lm(D ~ H5+ A + P + L, data=datos)
+h5
+S.H5 <- summary(h5) 
+S.H5
+```
+
+Ahora  comparamos los efectos de los indicadores  de degradación 
+
+```{r}
+# Se estraen  valor de P  para cada modelo 
+P.H1 <- S.H1$coefficients[2,4]
+P.H2 <- S.H2$coefficients[2,4]
+P.H3 <- S.H3$coefficients[2,4]
+P.H4 <- S.H4$coefficients[2,4]
+P.H5 <- S.H5$coefficients[2,4]
+
+```
+
+Creamos un marco de datos con los valores de p  para cada indicador de desgradacion ambiental  evaluado.
+
+
+```{r}
+R <- data.frame("Indicador"= c("H1","H2", "H3", "H4", "H5"), "Valores de P"=c(P.H1, P.H2, P.H3, P.H4, P.H5))
+R
+
+```
+
+# Podemos  observar que para los indicadores ambientales H1, H2 y H4  los efectos sobre la diversidad alelica son mayores que los efectos de  H3, y H5 . Entonces podemos concluir que los efectos que tienen los indicadores de degradación ambiental sobre la diveridad  alélica son diferentes entre si.
