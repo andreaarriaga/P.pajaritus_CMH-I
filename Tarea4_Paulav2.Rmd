@@ -1,0 +1,275 @@
+//////////---
+title: "Tarea4"
+author: "Paula Iturralde-Pólit"
+date: "04/11/2020"
+output: html_document
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r setup, echo=TRUE}
+
+
+datos <- read.csv("C:/Users/pmiturralde/Documents/Paula_mi_bitacora/Doctorado_UCR/Cursos/Ciencia_Rep/Tareas/Tarea4/Datos_tarea4.csv",header=T,sep=",")
+
+View(datos)
+
+
+```
+
+```{r}
+
+
+require(ggdag)
+
+dagified <- dagify(D ~ H,
+                   D ~ L,
+                   H ~ L,
+                   exposure = "H",
+                   outcome = "D")
+
+ggdag(dagified, layout = "circle") + theme_dag()
+
+
+```
+
+```{r}
+
+tidy_dagitty(dagified)
+
+```
+
+
+```{r}
+#Visualize data
+
+
+colnames(datos)
+
+
+D = ggplot() + 
+  geom_point(data = datos, aes(D, H1), color = "red")+
+  geom_point(data = datos, aes(D, H2), color = "green")+
+  geom_point(data = datos, aes(D, H3), color = "blue")+
+  geom_point(data = datos, aes(D, H4), color = "yellow")+
+  geom_point(data = datos, aes(D, H5), color = "orange")+
+    theme_bw()
+
+D
+
+
+
+```
+
+
+```{r}
+
+
+
+L = ggplot() + 
+  geom_point(data = datos, aes(L, H1), color = "red")+
+  geom_point(data = datos, aes(L, H2), color = "green")+
+  geom_point(data = datos, aes(L, H3), color = "blue")+
+  geom_point(data = datos, aes(L, H4), color = "yellow")+
+  geom_point(data = datos, aes(L, H5), color = "orange")+
+  theme_bw()
+
+L
+
+
+```
+
+
+```{r}
+
+hist(datos$D)
+
+a = mean(datos$H1)
+b = mean(datos$H2)
+o = mean(datos$H3)
+d = mean(datos$H4)
+f = mean(datos$H5)
+g = mean(datos$D)
+f = range(datos$D)
+
+
+```
+
+
+
+```{r}
+
+
+ggplot() + 
+geom_point(data = datos, aes(y = L, x = D), color = "darkblue")
+
+
+```
+
+
+```{r}
+
+
+ggplot() + 
+geom_bar(data = datos, aes(D), fill = "darkblue")
+
+
+
+
+
+```
+
+## Correccion de modelos
+
+En el modelo anterior se plantea varios modelos controlando por todas las variables H (de H1 a H5) por separado. Esto puede generar un error por comparaciones indireactas dando como resultado una diferencia entre las variables. 
+
+
+Para corregir este error voy a plantear un modelo en el que se controle por todas las variables H. Tambien se controla por la variable de la poblacion. 
+
+
+```{r}
+
+#Modelos
+require(lme4)
+require(nlme)
+
+#todas las variables sin tomar en cuenta a P como un factor aleatorio (podria ser el correcto)
+M.2 <- lm(D ~ H1 + H2 + H3 + H4 + H5 + L, data = datos)
+summary(M.2)
+
+
+```
+
+
+```{r}
+
+m3 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + L + (1|P), data = datos)
+summary(m3)
+
+
+m3.1 <- lmer(D ~ H1 + L + (1|P), data = datos)
+summary(m3.1)
+
+m3.2 <- lmer(D ~ H2 + L + (1|P), data = datos)
+summary(m3.2)
+
+m3.3 <- lmer(D ~ H3 + L + (1|P), data = datos)
+summary(m3.3)
+
+m3.4 <- lmer(D ~ H4 + L + (1|P), data = datos)
+summary(m3.4)
+
+m3.5 <- lmer(D ~ H5 + L + (1|P), data = datos)
+summary(m3.5)
+
+
+
+
+```
+
+
+```{r}
+
+
+m6 <- lm(D ~ L + H1+ H2 + H3 + H4 + H5 + P + factor(A), data = dat)
+summary(m6)
+
+
+
+```
+
+
+
+

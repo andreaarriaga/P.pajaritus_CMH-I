@@ -123,10 +123,6 @@ plot(m1)
 
 
 
-m2 <- lm(D ~ H1+H2+H1:H2+, data = dat)
-summary(m2)
-
-
 
 
 m5 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + L), data = dat)
