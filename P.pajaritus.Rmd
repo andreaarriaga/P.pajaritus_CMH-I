@@ -9,271 +9,7 @@ output: html_document
 library(lme4)
 library(ggplot2)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 ##### Andre
 Es necesario incluir en el modelo la variación asociada a la población donde pertenece el individuo y al año en que se tomó el dato, como variables aleatorias. De esta manera, es posible observar el efecto de las variables predictoras (H1, H2, H3, H4 y H5) sin que se vea enmascarada por la variación asociada a la población y año.
 
@@ -284,12 +20,6 @@ Es necesario incluir en el modelo la variación asociada a la población donde p
 # setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
 datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 str(datos)
-
-
-## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
- mod1 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + (1|P) + (1|A) + L, data = datos)
- # mod1
- # summary(mod1)
 
 
 ```
@@ -317,7 +47,7 @@ summary(Hpca)
 # str(Hpca)
 
 
-## extrayendo los scrores del promer componente principal para hacerlo una nueva variable que agrupa todas las H
+## extrayendo los scrores del primer componente principal para hacerlo una nueva variable que agrupa todas las H
 datos$degradacion <- Hpca$scores[,1]
 
 ```
@@ -361,6 +91,24 @@ ggplot(datos, aes(D, degradacion, color = P)) +
 
 
 
+```{r}
+
+## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
+ mod1 <- lmer(D ~ degradacion + (1|P) + (1|A) + L, data = datos)
+ mod1
+ summary(mod1)
+
+```
+
+
+```{r}
+
+## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
+ mod2 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + (1|P) + (1|A) + L, data = datos)
+ mod2
+ summary(mod2)
+
+```
 
 
 
