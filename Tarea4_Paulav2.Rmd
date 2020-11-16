@@ -1,10 +1,9 @@
 //////////---
 title: "Tarea4"
-author: "Paula Iturralde-Pólit"
+author: "Paula Iturralde-Polit"
 date: "04/11/2020"
 output: html_document
 ---
-
 
 
 ```{r}
@@ -12,98 +11,13 @@ output: html_document
 require(lme4)
 require(nlme)
 require(ggplot2)
+require(sjPlot)
+require(sjlabelled)
+require(sjmisc)
+require(jtools)
+
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ```{r setup, echo=TRUE}
@@ -116,7 +30,7 @@ View(datos)
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 
 require(ggdag)
@@ -132,7 +46,7 @@ ggdag(dagified, layout = "circle") + theme_dag()
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 tidy_dagitty(dagified)
 
@@ -142,7 +56,7 @@ tidy_dagitty(dagified)
 
 Relacion entre los tipos de degradacion de habitat y la diversidad de alelos
 
-```{r}
+```{r, echo=TRUE}
 #Visualize data
 
 
@@ -156,7 +70,10 @@ D = ggplot() +
   geom_point(data = datos, aes(D, H4), color = "coral1")+
   geom_point(data = datos, aes(D, H5), color = "darkorange1")+
   labs(y="Tipos de Degradacion", x="Diversidad de alelos") +
-    theme_bw()
+  ggtitle("Relacion entre tipos de degradacion y diversidad de alelos")+
+    theme_bw()+
+    theme(plot.title = element_text(hjust = 0.5))
+    
 
 D
 
@@ -167,7 +84,7 @@ D
 Relacion entre la latitud y la degradacion del habitat
 
 
-```{r}
+```{r, echo=TRUE}
 
 
 
@@ -178,7 +95,9 @@ L = ggplot() +
   geom_point(data = datos, aes(H4, L), color = "coral1", size = 3, pch = 17)+
   geom_point(data = datos, aes(H5, L), color = "darkorange1", size = 3, pch = 17)+
   labs(y="Latitud", x="Tipos de degradacion del Habitat") +
-    theme_bw()
+  ggtitle("Relacion entre tipos de degradacion y latitud")+
+    theme_bw()+
+    theme(plot.title = element_text(hjust = 0.5))
 
 L
 
@@ -188,27 +107,32 @@ L
 
 Relacion entre la DIversidad de Alelos y la latitud
 
-```{r}
+```{r, echo=TRUE}
 
 
 ggplot() + 
 geom_point(data = datos, aes(y = L, x = D), fill = "chocolate1", color = "black", size = 3, pch = 23)+
 labs(y="Latitud", x="Diversidad de Alelos") +
-    theme_bw()
+  ggtitle("Relacion entre latitud y diversidad de alelos")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))
   
 
 
 ```
 
-## Grafico de battas: frecuencia de diversidad
+## Grafico de barras: frecuencia de diversidad
 
-```{r}
+```{r, echo=TRUE}
 
 
 ggplot() + 
 geom_bar(data = datos, aes(D), fill = "darkblue")+
   labs(y="Frecuencia", x="Diversidad de Alelos") +
-    theme_bw()
+  ggtitle("Disribucion de frecuencia de la diversidad de alelos")+
+    theme_bw()+
+    theme(plot.title = element_text(hjust = 0.5))
+
 
 
 
@@ -218,60 +142,85 @@ geom_bar(data = datos, aes(D), fill = "darkblue")+
 
 ### Modelo 2
 
-En el modelo anterior se plantea varios modelos controlando por todas las variables H (de H1 a H5) por separado. Esto puede generar un error por comparaciones indirectas que puede resultar en un analisis equivocado de como se diferencian las variables entre si.
+En el ejemplo de Silvia se plantea diferentes modelos en los que se controla por separado por cada una de las variables H (de H1 a H5). Esto puede generar un error en la interpretacion de resultados ya que caemos en la trampa de comparaciones indirectas. No podemos asumir que las variables H sean diferentes entre si ya que lo mas probable es que todas en conjunto tienen un efecto sobre la diversidad de los alelos.
 
 
-Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H. Tambien se controla por la variable de la latitud ya que ambas tienen un efecto sobre la diversidad de alelos. 
+Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H y tambien por la latitud. 
+
+Sabemos que la latitud tiene un efecto directo e indirecto sobre la diversidad de alelos y tenemos que controlarla
 
 
-```{r}
+```{r, echo=TRUE}
 
-#Modelos
-#todas las variables sin tomar en cuenta a P como un factor aleatorio (podria ser el correcto)
+
+#Modelo donde controlamos por todas las variables de degradacion (H) y latitud (L)
+
 M.2 <- lm(D ~ H1 + H2 + H3 + H4 + H5 + L, data = datos)
 summary(M.2)
+summ(M.2)
 
 
 ```
 
+Los resultados indican que H1, H2 y H4 tienen un efecto significativo sobre la diversidad alelica. 
 
-```{r}
-
-m3 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + L + (1|P), data = datos)
-summary(m3)
+Si graficamos los valores estimados vemos que las tres variables que tienen un efecto significativo son las que estan mas alejadas del 0 y que efectivamente su efecto sobre la diversidad alelica es mayor con respecto a las otas dos variables de H
 
 
-m3.1 <- lmer(D ~ H1 + L + (1|P), data = datos)
-summary(m3.1)
+```{r, echo=TRUE}
 
-m3.2 <- lmer(D ~ H2 + L + (1|P), data = datos)
-summary(m3.2)
 
-m3.3 <- lmer(D ~ H3 + L + (1|P), data = datos)
-summary(m3.3)
+#plot_model(M.2, colors = "darkblue")
+#plot_model(M.2, transform = "plogis", show.values = TRUE, value.offset = .3, colors = "darkblue")
+plot_summs(M.2, colors = "darkblue")
 
-m3.4 <- lmer(D ~ H4 + L + (1|P), data = datos)
-summary(m3.4)
 
-m3.5 <- lmer(D ~ H5 + L + (1|P), data = datos)
-summary(m3.5)
+```
+A pesar de ser un modelo que integra a todas las variables por las que controlamos, los resultados aparentan ser similares a los obtenidos con los modelos que se hicieron con cada H por separado. 
+
+Para visualizar mejor estos resultados voy a generar graficos independientes para cada variable H de degradacion
+
+
+```{r, figures-side, fig.width=6, fig.height=4,fig.show='hold', out.width="50%", dpi = 500}
+
+require(ggstance)
+require(piecewiseSEM)
+require(broom.mixed)
+
+effect_plot(M.2, pred = H1, interval = TRUE, plot.points = TRUE)
+effect_plot(M.2, pred = H2, interval = TRUE, plot.points = TRUE)
+effect_plot(M.2, pred = H3, interval = TRUE, plot.points = TRUE)
+effect_plot(M.2, pred = H4, interval = TRUE, plot.points = TRUE)
+effect_plot(M.2, pred = H5, interval = TRUE, plot.points = TRUE)
+effect_plot(M.2, pred = L, interval = TRUE, plot.points = TRUE)
 
 
 
 
 ```
 
+Los graficos resltan ser muy similares a los obtenidos en el modelo de Silvia, por lo que considero que es necesario hacer un modelo con interacciones entre las variables H
 
-```{r}
 
+```{r, echo=TRUE}
 
-m6 <- lm(D ~ L + H1+ H2 + H3 + H4 + H5 + P + factor(A), data = dat)
-summary(m6)
-
+M.4 <- lm(D ~ H1:H2:H3:H4:H5+L, data = datos)
+summary(M.4)
 
 
 ```
 
+Estos resultados tienen sentido porque ademas al hacer la interaccion ya encontramos una influencia significativa de la Latitud (L) sobre la  diversidad alelica.
 
+Si graficamos los estumados entonces obtenemos lo siguiente:
+
+
+```{r, echo=TRUE}
+
+plot_summs(M.4, colors = "darkBlue", plot.distributions = TRUE)
+
+```
+
+## Tanto la latitud (L) como la interaccion de las variables H tiene una influencia sobre la diversidad alelica. 
 
 
