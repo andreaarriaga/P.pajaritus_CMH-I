@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 library(lme4)
 library(ggplot2)
+library(jtools)
 ```
     
 ##### Andre
@@ -78,6 +79,17 @@ ggplot(datos, aes(degradacion, D )) +
    theme_bw()
 ```
 
+
+
+
+
+```{r}
+
+## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
+ mod1 <- lmer(D ~ degradacion + (1|P) + (1|A) + L, data = datos)
+ mod1
+ summ(mod1)
+```
 Fig 2. Gráfico tomando en cuenta la variación según la población.
 
 ```{r}
@@ -91,24 +103,8 @@ ggplot(datos, aes(D, degradacion, color = P)) +
 
 
 
-```{r}
 
-## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
- mod1 <- lmer(D ~ degradacion + (1|P) + (1|A) + L, data = datos)
- mod1
- summary(mod1)
-
-```
-
-
-```{r}
-
-## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
- mod2 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + (1|P) + (1|A) + L, data = datos)
- mod2
- summary(mod2)
-
-```
+R/ Todos los parámetros de degradación evaluados(H1, H2, H3, H4, H5), tienen un efecto significativo sobre la diversidad alélica del...
 
 
 
