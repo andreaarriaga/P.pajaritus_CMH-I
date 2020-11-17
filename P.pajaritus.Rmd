@@ -1,14 +1,18 @@
 ---
 title: "P.pajaritus_CMH-I"
-author: "Andrea Arriaga-Madrigal, Paula Iturralde  y Silvia Chaves"
-date:  "`r Sys.Date()`"
-output: html_document
----
-&nbsp;
-```{r setup, include=FALSE}
-library(lme4)
-library(ggplot2)
-```
+author: "Andrea Arriaga-Madrigal, Paula Iturralde y Silvia Chaves"
+date: "`r Sys.Date()`"
+output:
+html_document:
+fig_caption: yes
+number_sections: no
+toc: yes
+toc_depth: 4
+toc_float: yes
+df_print: paged
+editor_options: 
+chunk_output_type: console
+--- 
 
 
 
@@ -264,100 +268,6 @@ library(ggplot2)
 
 
 
-
-
-
-
-
-
-
-
-
-
-##### Andre
-Es necesario incluir en el modelo la variación asociada a la población donde pertenece el individuo y al año en que se tomó el dato, como variables aleatorias. De esta manera, es posible observar el efecto de las variables predictoras (H1, H2, H3, H4 y H5) sin que se vea enmascarada por la variación asociada a la población y año.
-
-
-
-
-```{r}
-# setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
-datos <- read.csv("Datos_tarea4.csv", header = TRUE)
-str(datos)
-
-
-## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
- mod1 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + (1|P) + (1|A) + L, data = datos)
- # mod1
- # summary(mod1)
-
-
-```
-
-
-
-A partir de este análisis, se observa entre los efectos fijos, el H5 es el parámetro de degradación de hábitat que se correlacionado más en relación con la latitud (cor = -0.478).
-
-
-
-&nbsp;
-
-
-
-
-
-Se va a realizar un PCA para resumir las H en una sola variable predictora 
-
-```{r}
-# prueba con PCA
-
-Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
-# Hpca
-summary(Hpca)
-# str(Hpca)
-
-
-## extrayendo los scrores del promer componente principal para hacerlo una nueva variable que agrupa todas las H
-datos$degradacion <- Hpca$scores[,1]
-
-```
-
-
-
-```{r, echo= FALSE}
-
-
-head(datos)
-
-
-## preparacion de los datos para hacer los graficos
-datos$P <- as.factor(datos$P)
-datos$A <- as.factor(datos$A)
-
-
-## calculando el promedio por P
-# prom <- aggregate(D ~ P, FUN = mean, data = datos)
-```
-
-Fig 1. Tendencia general si se asume todos los puntos como una misma muestra, sin tomar en cuenta la población ni el año.
-```{r}
-## grafico con los scores del PC1 (degradacion) como variable predictora
-ggplot(datos, aes(degradacion, D )) +
-  geom_point(alpha = 0.4,  show.legend = FALSE) + 
-  geom_smooth(show.legend = FALSE) +
-   theme_bw()
-```
-
-Fig 2. Gráfico tomando en cuenta la variación según la población.
-
-```{r}
-## dividido por poblacion
-ggplot(datos, aes(D, degradacion, color = P)) +
-  geom_point(alpha = 0.5,  show.legend = FALSE) + 
-  geom_smooth(method = "lm", show.legend = FALSE) + 
-  theme_bw()
-
-```
 
 
 
