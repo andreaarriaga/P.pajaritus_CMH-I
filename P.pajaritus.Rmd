@@ -381,7 +381,7 @@ Para esto el modelo se plantea de la siguiente manera:
 
 &nbsp;
 
-**Interpretación:** Los resultados indican que todos los parámetros de degradación ambiental evaluados (H1, H2, H3, H4, H5), tienen un efecto significativo sobre la diversidad alélica (z = -2.89, p < 0.01) del complejo mayor de histocompatibilidad (CMH) clase I. ## revisar
+**Interpretación:** Los resultados indican que todos los parámetros de degradación ambiental evaluados (H1, H2, H3, H4, H5), tienen un efecto significativo sobre la diversidad alélica (z = -2.89, p < 0.01) del complejo mayor de histocompatibilidad (CMH) clase I.
 
 &nbsp;
 
