@@ -1,0 +1,168 @@
+//////////---
+title: "Tarea4"
+author: "Paula Iturralde-Pólit"
+date: "04/11/2020"
+output: html_document
+---
+
+```{r setup, echo=TRUE}
+
+
+dat <- read.csv("C:/Users/pmiturralde/Documents/Paula_mi_bitacora/Doctorado_UCR/Cursos/Ciencia_Rep/Tareas/Tarea4/Datos_tarea4.csv",header=T,sep=",")
+
+View(dat)
+
+
+```
+
+```{r}
+
+
+require(ggdag)
+
+dagified <- dagify(D ~ H,
+                   D ~ L,
+                   H ~ L,
+                   exposure = "H",
+                   outcome = "D")
+
+ggdag(dagified, layout = "circle") + theme_dag()
+
+
+```
+
+```{r}
+
+tidy_dagitty(dagified)
+
+```
+
+
+```{r}
+#Visualize data
+
+
+colnames(dat)
+
+ggplot()
+
+
+
+
+D = ggplot() + 
+  geom_point(data = dat, aes(D, H1), color = "red")+
+  geom_point(data = dat, aes(D, H2), color = "green")+
+  geom_point(data = dat, aes(D, H3), color = "blue")+
+  geom_point(data = dat, aes(D, H4), color = "yellow")+
+  geom_point(data = dat, aes(D, H5), color = "orange")+
+    theme_bw()
+
+D
+
+
+
+```
+
+
+```{r}
+
+
+L = ggplot() + 
+  geom_point(data = dat, aes(L, H1), color = "red")+
+  geom_point(data = dat, aes(L, H2), color = "green")+
+  geom_point(data = dat, aes(L, H3), color = "blue")+
+  geom_point(data = dat, aes(L, H4), color = "yellow")+
+  geom_point(data = dat, aes(L, H5), color = "orange")+
+  theme_bw()
+
+L
+
+
+```
+
+
+```{r}
+
+hist(dat$D)
+
+colnames(dat)
+
+
+
+
+a = mean(dat$H1)
+b = mean(dat$H2)
+o = mean(dat$H3)
+d = mean(dat$H4)
+f = mean(dat$H5)
+
+
+
+```
+
+
+
+```{r}
+ggplot() + 
+geom_point(data = dat, aes(L, D), color = "red")
+
+```
+
+
+```{r}
+#Modelos
+require(lme4)
+require(nlme)
+
+m1 <- lm(D ~ H1 * (H2 + H3 + H4 + H5) + L, data = dat)
+summary(m1)
+
+
+plot(m1)
+
+
+
+
+
+
+m5 <- lmer(D ~ H1 + H2 + H3 + H4 + H5 + L), data = dat)
+
+summary(m5)
+
+
+m6 <- lm(D ~ L + H1+ H2 + H3 + H4 + H5 + P + factor(A), data = dat)
+
+summary(m6)
+
+plot(dat$L, dat$D, xlab = "L", ylab = "D")
+
+
+tmp3 <- lm(Richness ~ NAP * factor(Beach), data = RIKZ)
+> plot(RIKZ$NAP, RIKZ$Richness, xlab = "NAP", ylab = "Richness")
+> for (i in 1:9) {
++ J <- RIKZ$Beach == i
++ x1 <- RIKZ$NAP[J]
++ y1 <- tmp3$fitted[J]
++ Ord <- order(x1)
++ lines(x1[Ord], y1[Ord])
++ }
+l
+
+
+
+
+
+
+```
+
+
+```{r}
+
+
+m2 <- lm(D ~ H1 +(H2 : H3 : H4 : H5) + L, data = dat)
+summary(m2)
+
+
+```
+
+
