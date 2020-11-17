@@ -308,6 +308,12 @@ datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 
 &nbsp;
 
+### Correción modelo 3
+
+Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (fig. 1).
+
+&nbsp;
+
 ```{r}
 # PCA
 Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
@@ -320,6 +326,7 @@ datos$degradacion <- Hpca$scores[,1]
 
 
 Cuadro 1. Visualización de las primeras seis filas de la base de datos, ahora con la nueva variable "degradación".
+
 ```{r , echo= FALSE}
 head(datos)
 ```
