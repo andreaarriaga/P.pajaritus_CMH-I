@@ -33,7 +33,7 @@ datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 
 ```
 
-## Modelo 1 
+## Modelo 1. Silvia 
 
 Se estudió el efecto que tienen diferentes indicadores H de degradación ambiental sobre  diversidad alélica (D) del complejo CMH-I de *P. pajaritus*
 
@@ -143,7 +143,7 @@ grid.arrange(p1, p2, p3, p4, p5)
 
 &nbsp;  
 
-**Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio.  
+**Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio. Las líneas azules representa la tendencia general de los datos para cada indicador y  área sombreada en gris el intervalo de confianza al 95%  
 
 
 &nbsp;  
@@ -153,19 +153,9 @@ grid.arrange(p1, p2, p3, p4, p5)
 
 &nbsp;
 
-### Correción modelo 3
+---
 
-Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (fig. 1).
-
-```{r set up, echo=FALSE}
-# setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
-datos <- read.csv("Datos_tarea4.csv", header = TRUE)
-# str(datos)
-```
-
-&nbsp;
-
-### Correción modelo 3
+### Correción modelo 3. Andrea
 
 Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (fig. 1).
 
@@ -228,7 +218,7 @@ Fig 2. Variación de la diversidad alélica (**D**) según la degradación del s
 
 Para esto el modelo se plantea de la siguiente manera:
 
-## Modelo 4
+## Modelo 4. Andrea Arriaga
 
 ```{r modelo, warning=FALSE, message=FALSE}
 ## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
@@ -241,5 +231,11 @@ Para esto el modelo se plantea de la siguiente manera:
 **Interpretación:** Los resultados indican que todos los parámetros de degradación ambiental evaluados (H1, H2, H3, H4, H5), tienen un efecto significativo sobre la diversidad alélica (z = -2.89, p < 0.01) del complejo mayor de histocompatibilidad (CMH) clase I.
 
 &nbsp;
+
+### Corrección Modelo 4. Silvia 
+
+&nbsp;
+
+Según lo planteado para el uso del  Modelo 4, este  modelo es correcto si lo que deseamos es obtener  el efecto  que tienen todos los indicadores ambientales en conjunto sobre D. Sin embargo, la interpretación sobre su resultado es incorrecta y representa una trampa estadística de reporte selectivo. Debido a que se está reportando y asumiendo  que el efecto que tiene cada uno de los indicadores ambientales (H1, H2, H3, H4, H5) sobre  D es el mismo, cuando lo que se quiere averiguar es el efecto del mayor  eje de variación  **degradación** (determinado con un análisis de **PCA**) sobre nuestra variable D. Por lo tanto se debería concluir  que, de forma general, la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I si es afectada por la degradación ambiental.  
 
 
