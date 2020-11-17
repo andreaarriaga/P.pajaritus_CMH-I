@@ -2,22 +2,39 @@
 title: "P.pajaritus_CMH-I"
 author: "Andrea Arriaga-Madrigal, Paula Iturralde  y Silvia Chaves"
 date:  "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: no
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    df_print: paged
+editor_options: 
+  chunk_output_type: console
 ---
 
 
+
 Cargar paquetes 
-```{r, message=FALSE, warning=FALSE}
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
 
 library(lme4)
 library(ggplot2)
 library(gridExtra)
+require(lme4)
+require(nlme)
+require(sjPlot)
+require(sjlabelled)
+require(sjmisc)
+require(jtools)
+library(glmm)
 datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 
 
 ```
 
-# Trampa 1.Silvia  
+## Modelo 1 
 
 Se estudió  el efecto que tienen diferentes indicadores H de degradación ambiental sobre  diversidad alélica (D) del complejo CMH-I de *P. pajaritus*
 
@@ -25,38 +42,42 @@ Para esto apliqué modelos lineales para ver el efectos de cada indeicador H sob
 
 ```{r T1,}
 # Para H1
-h1 <- lm(D ~ H1 + A + P + L, data= datos)
+h1 <- glm(D ~ H1 + A + P + L, data= datos, family = "poisson")
 h1
 S.H1 <- summary(h1)
 S.H1
 
 # Para H2
-h2 <- lm(D ~ H2+ A + P + L, data=datos)
+h2 <- glm(D ~ H2+ A + P + L, data=datos,family = "poisson")
 
 h2
 S.H2 <- summary(h2)
 S.H2
 # Para H3
-h3 <- lm(D ~ H3+ A + P + L, data=datos)
+h3 <- glm(D ~ H3+ A + P + L, data=datos,family = "poisson")
 h3
 
 S.H3 <- summary(h3)
 S.H3
 
 # Para H4
-h4 <- lm(D ~ H4+ A + P + L, data=datos)
+h4 <- glm(D ~ H4+ A + P + L, data=datos, family = "poisson")
 h4
 S.H4 <- summary(h4) 
 S.H4
 
 #Para H5 
-h5 <- lm(D ~ H5+ A + P + L, data=datos)
+h5 <- glm(D ~ H5+ A + P + L, data=datos, family = "poisson")
 h5
 S.H5 <- summary(h5) 
 S.H5
 ```
 
+&nbsp;  
+
 Ahora comparamos los efectos de los indicadores  de degradación 
+
+&nbsp;  
 
 ```{r}
 # Se estraen  valor de P  para cada modelo 
@@ -68,7 +89,11 @@ P.H5 <- S.H5$coefficients[2,4]
 
 ```
 
+&nbsp;  
+
 Creamos un marco de datos con los valores de p  para cada indicador de desgradación ambiental evaluado.
+
+&nbsp;  
 
 
 ```{r}
@@ -108,12 +133,18 @@ p5 <- ggplot(data= datos, aes(x= H5, y= D)) +
   geom_point() +
   geom_smooth() + 
   labs(x="Indicador H5", y="Diversidad alélica el complejo CMH-I")
+```
 
-grid.arrange(p1, p2, p3, p4, p5, ncol=3, nrow=2)
+
+```{r, echo=TRUE, figures-side, fig.width=8, fig.height=10,fig.show='hold', out.width="50%", dpi = 500, warning= FALSE,message=FALSE}
+
+grid.arrange(p1, p2, p3, p4, p5)
 
 ```
-<center> **Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio.<center>   
 
+&nbsp;  
+
+**Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio.  
 
 
 &nbsp;  
@@ -121,3 +152,9 @@ grid.arrange(p1, p2, p3, p4, p5, ncol=3, nrow=2)
 **Interpretación:** Encontré que los efectos sobre la diversidad alélica de los indicadores ambientales H1, H2 y H4 (p<0.05)  son mayores que los efectos de  H3, y H5 (p>0.05) . Entonces podemos concluir que los efectos tienen los indicadores de degradación ambiental sobre la diveridad  alélica son diferentes entre si.  
 
 &nbsp;
+
+### Corrección Modelo 4  
+
+El modelo utilizado es correcto, sin embargo la interpretación del análisis es incorrecta ya que  el modelo  lo que  de muestra es que el eje de variación de lo datos para todos loe indices  de degradacion tiene un efecto en conjunto  sobre  la diversidad alelica, lo que no significa que todas tengan un efecto significativo y  el mismo efecto sobre  y corresponde a la trampa estadística de Reporte selectivo   sobre la diversidad alelica del complejo       
+
+
