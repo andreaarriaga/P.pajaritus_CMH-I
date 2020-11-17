@@ -1,12 +1,12 @@
-//////////---
+---
 title: "Tarea4"
-author: "Paula Iturralde-Polit"
+author: "Andrea Arriaga-Madrigal, Paula Iturralde-Polit, Silvia Chavez"
 date: "04/11/2020"
 output: html_document
+
 ---
 
-
-```{r}
+```{r, echo=FALSE, include=FALSE, results='hide', message=FALSE, warning=FALSE}
 
 require(lme4)
 require(nlme)
@@ -20,7 +20,8 @@ require(jtools)
 ```
 
 
-```{r setup, echo=TRUE}
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 
 
 datos <- read.csv("C:/Users/pmiturralde/Documents/Paula_mi_bitacora/Doctorado_UCR/Cursos/Ciencia_Rep/Tareas/Tarea4/Datos_tarea4.csv",header=T,sep=",")
@@ -30,7 +31,8 @@ View(datos)
 
 ```
 
-```{r, echo=TRUE}
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
 
 require(ggdag)
@@ -46,7 +48,7 @@ ggdag(dagified, layout = "circle") + theme_dag()
 
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
 tidy_dagitty(dagified)
 
@@ -54,9 +56,9 @@ tidy_dagitty(dagified)
 
 ## Visualizar datos
 
-Relacion entre los tipos de degradacion de habitat y la diversidad de alelos
+### Relacion entre los tipos de degradacion de habitat y la diversidad de alelos
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 #Visualize data
 
 
@@ -81,10 +83,10 @@ D
 
 ```
 
-Relacion entre la latitud y la degradacion del habitat
+### Relacion entre la latitud y la degradacion del habitat
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
 
 
@@ -95,7 +97,7 @@ L = ggplot() +
   geom_point(data = datos, aes(H4, L), color = "coral1", size = 3, pch = 17)+
   geom_point(data = datos, aes(H5, L), color = "darkorange1", size = 3, pch = 17)+
   labs(y="Latitud", x="Tipos de degradacion del Habitat") +
-  ggtitle("Relacion entre tipos de degradacion y latitud")+
+  ggtitle("Relacion entre tipos de degradacion y Latitud")+
     theme_bw()+
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -104,26 +106,26 @@ L
 
 
 ```
+&nbsp;
 
-Relacion entre la DIversidad de Alelos y la latitud
+### Relacion entre la DIversidad de Alelos y la latitud
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
 
 ggplot() + 
 geom_point(data = datos, aes(y = L, x = D), fill = "chocolate1", color = "black", size = 3, pch = 23)+
 labs(y="Latitud", x="Diversidad de Alelos") +
-  ggtitle("Relacion entre latitud y diversidad de alelos")+
+  ggtitle("Relacion entre Latitud y Diversidad de Alelos")+
   theme_bw()+
   theme(plot.title = element_text(hjust = 0.5))
   
 
-
 ```
 
-## Grafico de barras: frecuencia de diversidad
+### Grafico de barras: frecuencia de diversidad
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
 
 ggplot() + 
@@ -138,36 +140,34 @@ geom_bar(data = datos, aes(D), fill = "darkblue")+
 
 ```
 
-## Correccion de modelos
-
-### Modelo 2
-
-En el ejemplo de Silvia se plantea diferentes modelos en los que se controla por separado por cada una de las variables H (de H1 a H5). Esto puede generar un error en la interpretacion de resultados ya que caemos en la trampa de comparaciones indirectas. No podemos asumir que las variables H sean diferentes entre si ya que lo mas probable es que todas en conjunto tienen un efecto sobre la diversidad de los alelos.
 
 
-Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H y tambien por la latitud. 
+### Correccion Modelo 1
 
-Sabemos que la latitud tiene un efecto directo e indirecto sobre la diversidad de alelos y tenemos que controlarla
+**Correccion interpretacion** En el ejemplo del Modelo 1 se plantea diferentes modelos en los que se controla por separado por cada una de las variables H (de H1 a H5). Esto puede generar un error en la interpretacion de resultados ya que caemos en la trampa de comparaciones indirectas. 
+
+No podemos asumir que las variables H sean diferentes entre si ya que lo mas probable es que todas en conjunto tienen un efecto sobre la diversidad de los alelos. Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H y tambien por la latitud ya que sabemos que tiene un efecto sobre la latitud.
 
 
-```{r, echo=TRUE}
+## Modelo 2
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
 
 #Modelo donde controlamos por todas las variables de degradacion (H) y latitud (L)
 
-M.2 <- lm(D ~ H1 + H2 + H3 + H4 + H5 + L, data = datos)
+M.2 <- glm(D ~ H1 + H2 + H3 + H4 + H5 + L, data = datos, family = poisson)
 summary(M.2)
-summ(M.2)
+#summ(M.2)
 
 
 ```
 
-Los resultados indican que H1, H2 y H4 tienen un efecto significativo sobre la diversidad alelica. 
-
-Si graficamos los valores estimados vemos que las tres variables que tienen un efecto significativo son las que estan mas alejadas del 0 y que efectivamente su efecto sobre la diversidad alelica es mayor con respecto a las otas dos variables de H
+**Interpretacion** Los resultados indican que H1, H2 y H4 tienen un efecto significativo sobre la diversidad alelica. Si graficamos los valores estimados vemos que esas tres variables tienen un efecto significativo son las que estan mas alejadas del 0 y que efectivamente su efecto sobre la diversidad alelica es mayor con respecto a las otras dos variables de H.
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
 
 #plot_model(M.2, colors = "darkblue")
@@ -176,9 +176,9 @@ plot_summs(M.2, colors = "darkblue")
 
 
 ```
-A pesar de ser un modelo que integra a todas las variables por las que controlamos, los resultados aparentan ser similares a los obtenidos con los modelos que se hicieron con cada H por separado. 
 
 Para visualizar mejor estos resultados voy a generar graficos independientes para cada variable H de degradacion
+
 
 
 ```{r, figures-side, fig.width=6, fig.height=4,fig.show='hold', out.width="50%", dpi = 500}
@@ -198,29 +198,29 @@ effect_plot(M.2, pred = L, interval = TRUE, plot.points = TRUE)
 
 
 ```
+**Nota** Un problema con este modelo es que toma a cada variable independientemente, y es necesario hacer la interaccion. Por lo tanto voy a descartar este modelo para poder tomar en cuenta la interaccion entre todas las variables de degradacion H. 
 
-Los graficos resltan ser muy similares a los obtenidos en el modelo de Silvia, por lo que considero que es necesario hacer un modelo con interacciones entre las variables H
+## Modelo 3
 
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
-```{r, echo=TRUE}
-
-M.4 <- lm(D ~ H1:H2:H3:H4:H5+L, data = datos)
-summary(M.4)
+M.3 <- glm(D ~ H1:H2:H3:H4:H5+L, data = datos, family = poisson())
+summary(M.3)
 
 
 ```
 
-Estos resultados tienen sentido porque ademas al hacer la interaccion ya encontramos una influencia significativa de la Latitud (L) sobre la  diversidad alelica.
+**Interpretacion** Estos resultados tienen sentido porque ademas al hacer la interaccion ya encontramos una influencia significativa de la Latitud (L) sobre la  diversidad alelica. La interaccion de todos losH presenta un valor de p en el que podemos afirmar que la degradacion afecta la diversidad alelica. 
 
-Si graficamos los estumados entonces obtenemos lo siguiente:
+Si graficamos los estimados entonces obtenemos lo siguiente:
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
-plot_summs(M.4, colors = "darkBlue", plot.distributions = TRUE)
+plot_summs(M.3, colors = "darkBlue", plot.distributions = TRUE)
 
 ```
 
-## Tanto la latitud (L) como la interaccion de las variables H tiene una influencia sobre la diversidad alelica. 
+### **Conclusion** Segun este modelo la latitud (L) y la interaccion de las variables H tiene una influencia sobre la diversidad alelica. 
 
 
