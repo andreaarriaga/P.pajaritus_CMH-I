@@ -6,22 +6,24 @@ output: html_document
 ---
 
 
-# Trampa 1
-```{r}
+Cargar paquetes 
+```{r, message=FALSE, warning=FALSE}
 
 library(lme4)
 library(ggplot2)
+library(gridExtra)
 datos <- read.csv("Datos_tarea4.csv", header = TRUE)
-str(datos)
+
 
 ```
 
+# Trampa 1.Silvia  
 
-Se estudio  el efecto que tienen diferentes indicadores de degradación ambiental sobre  diversidad alélica (D) del complejo CMH-I de P. pajaritus
+Se estudió  el efecto que tienen diferentes indicadores H de degradación ambiental sobre  diversidad alélica (D) del complejo CMH-I de *P. pajaritus*
 
-Se realizaron los siguentes modelos lineales  para determinar dichos efectos. 
+Para esto apliqué modelos lineales para ver el efectos de cada indeicador H sobre D
 
-```{r T1, include=FALSE}
+```{r T1,}
 # Para H1
 h1 <- lm(D ~ H1 + A + P + L, data= datos)
 h1
@@ -54,7 +56,7 @@ S.H5 <- summary(h5)
 S.H5
 ```
 
-Ahora  comparamos los efectos de los indicadores  de degradación 
+Ahora comparamos los efectos de los indicadores  de degradación 
 
 ```{r}
 # Se estraen  valor de P  para cada modelo 
@@ -66,7 +68,7 @@ P.H5 <- S.H5$coefficients[2,4]
 
 ```
 
-Creamos un marco de datos con los valores de p  para cada indicador de desgradacion ambiental  evaluado.
+Creamos un marco de datos con los valores de p  para cada indicador de desgradación ambiental evaluado.
 
 
 ```{r}
@@ -75,4 +77,47 @@ R
 
 ```
 
-# Podemos  observar que para los indicadores ambientales H1, H2 y H4  los efectos sobre la diversidad alelica son mayores que los efectos de  H3, y H5 . Entonces podemos concluir que los efectos que tienen los indicadores de degradación ambiental sobre la diveridad  alélica son diferentes entre si.
+&nbsp;  
+
+Visualizamos los datos  
+
+&nbsp;  
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+p1 <- ggplot(data= datos, aes(x= H1, y= D)) +
+  geom_point() +
+  geom_smooth() + 
+  labs(x="Indicador H1", y="Diversidad alélica el complejo CMH-I")
+
+p2 <- ggplot(data= datos, aes(x= H2, y= D)) +
+  geom_point() +
+  geom_smooth() + 
+  labs(x="Indicador H2", y="Diversidad alélica el complejo CMH-I")
+
+p3 <- ggplot(data= datos, aes(x= H3, y= D)) +
+  geom_point() +
+  geom_smooth() + 
+  labs(x="Indicador H3", y="Diversidad alélica el complejo CMH-I")
+
+p4 <- ggplot(data= datos, aes(x= H4, y= D)) +
+  geom_point() +
+  geom_smooth() + 
+  labs(x="Indicador H4", y="Diversidad alélica el complejo CMH-I")
+
+p5 <- ggplot(data= datos, aes(x= H5, y= D)) +
+  geom_point() +
+  geom_smooth() + 
+  labs(x="Indicador H5", y="Diversidad alélica el complejo CMH-I")
+
+grid.arrange(p1, p2, p3, p4, p5, ncol=3, nrow=2)
+
+```
+<center> **Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio.<center>   
+
+
+
+&nbsp;  
+
+**Interpretación:** Encontré que los efectos sobre la diversidad alélica de los indicadores ambientales H1, H2 y H4 (p<0.05)  son mayores que los efectos de  H3, y H5 (p>0.05) . Entonces podemos concluir que los efectos tienen los indicadores de degradación ambiental sobre la diveridad  alélica son diferentes entre si.  
+
+&nbsp;
