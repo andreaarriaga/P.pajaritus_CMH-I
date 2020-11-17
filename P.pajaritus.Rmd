@@ -15,7 +15,6 @@ editor_options:
 ---
 
 
-
 Cargar paquetes 
 ```{r,echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -149,12 +148,10 @@ grid.arrange(p1, p2, p3, p4, p5)
 
 &nbsp;  
 
-**Interpretación:** Encontré que los efectos sobre la diversidad alélica de los indicadores ambientales H1, H2 y H4 (p<0.05)  son mayores que los efectos de  H3, y H5 (p>0.05) . Entonces podemos concluir que los efectos tienen los indicadores de degradación ambiental sobre la diveridad  alélica son diferentes entre si.  
+**Interpretación: ** Como se puede observar en el marco de datos  de los valores de P para cada modelo aplicado, efectivamente encontré que los indicadores de degradación  ambientales H1, H2 , H3, H4 y H5, tiene efectos  significativos  sobre la variación de la D (p<0.05). Entonces podemos concluir que  los indicadores de degradación ambiental  afectan de igual manera  a la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I.
+
 
 &nbsp;
 
-### Corrección Modelo 4  
-
-El modelo utilizado es correcto, sin embargo la interpretación del análisis es incorrecta ya que  el modelo  lo que  de muestra es que el eje de variación de lo datos para todos loe indices  de degradacion tiene un efecto en conjunto  sobre  la diversidad alelica, lo que no significa que todas tengan un efecto significativo y  el mismo efecto sobre  y corresponde a la trampa estadística de Reporte selectivo   sobre la diversidad alelica del complejo       
 
 
