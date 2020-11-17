@@ -14,7 +14,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-
+Para acceder  al repositorio de github de este proyecto seleccione [aquí](https://github.com/andreaarriaga/P.pajaritus_CMH-I.git)
 
 ```{r, include = FALSE, message=FALSE, warning=FALSE}
 
@@ -52,23 +52,19 @@ ggdag(dagified, layout = "circle") + theme_dag()
 ```
 
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 tidy_dagitty(dagified)
 
 ```
-
+**Figura 1.** Diagrama causal del sistema de estudio
 
 ## Visualizar datos
 
-### Relacion entre los tipos de degradacion de habitat y la diversidad de alelos
+Relación entre los tipos de degradación de hábitat y la diversidad de alelos
 
-```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
+```{r, echo=FALSE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 #Visualize data
-
-
-colnames(datos)
-
 
 D = ggplot() + 
   geom_point(data = datos, aes(D, H1), color = "brown3")+
@@ -88,7 +84,7 @@ D
 
 ```
 
-### Relacion entre la latitud y la degradacion del habitat
+Relación entre la latitud y la degradación del hábitat
 
 ```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
@@ -100,8 +96,8 @@ L = ggplot() +
   geom_point(data = datos, aes(H3, L), color = "cyan4", size = 3, pch = 17)+
   geom_point(data = datos, aes(H4, L), color = "coral1", size = 3, pch = 17)+
   geom_point(data = datos, aes(H5, L), color = "darkorange1", size = 3, pch = 17)+
-  labs(y="Latitud", x="Tipos de degradacion del Habitat") +
-  ggtitle("Relacion entre tipos de degradacion y Latitud")+
+  labs(y="Latitud", x="Tipos de degradación del Hábitat") +
+  ggtitle("Relacion entre tipos de degradación y Latitud")+
     theme_bw()+
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -113,7 +109,7 @@ L
 
 &nbsp;
 
-### Relacion entre la DIversidad de Alelos y la latitud
+Relación entre la Diversidad de Alelos y la Latitud
 
 
 ```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
@@ -122,7 +118,7 @@ L
 ggplot() + 
 geom_point(data = datos, aes(y = L, x = D), fill = "chocolate1", color = "black", size = 3, pch = 23)+
 labs(y="Latitud", x="Diversidad de Alelos") +
-  ggtitle("Relacion entre Latitud y Diversidad de Alelos")+
+  ggtitle("Relación entre Latitud y Diversidad de Alelos")+
   theme_bw()+
   theme(plot.title = element_text(hjust = 0.5))
   
@@ -130,7 +126,7 @@ labs(y="Latitud", x="Diversidad de Alelos") +
 ```
 
 
-### Grafico de barras: frecuencia de diversidad
+Gráfico de barras: frecuencia de diversidad
 
 ```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
 
@@ -138,7 +134,7 @@ labs(y="Latitud", x="Diversidad de Alelos") +
 ggplot() + 
 geom_bar(data = datos, aes(D), fill = "darkblue")+
   labs(y="Frecuencia", x="Diversidad de Alelos") +
-  ggtitle("Disribucion de frecuencia de la diversidad de alelos")+
+  ggtitle("Disribución de frecuencia de la diversidad de alelos")+
     theme_bw()+
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -226,39 +222,39 @@ Visualizamos los datos
 p1 <- ggplot(data= datos, aes(x= H1, y= D)) +
   geom_point() +
   geom_smooth() + 
-  labs(x="Indicador H1", y="Diversidad alélica el complejo CMH-I")
+  labs(x="Indicador H1", y="D CMH-I")
 
 p2 <- ggplot(data= datos, aes(x= H2, y= D)) +
   geom_point() +
   geom_smooth() + 
-  labs(x="Indicador H2", y="Diversidad alélica el complejo CMH-I")
+  labs(x="Indicador H2", y="D CMH-I")
 
 p3 <- ggplot(data= datos, aes(x= H3, y= D)) +
   geom_point() +
   geom_smooth() + 
-  labs(x="Indicador H3", y="Diversidad alélica el complejo CMH-I")
+  labs(x="Indicador H3", y="D CMH-I")
 
 p4 <- ggplot(data= datos, aes(x= H4, y= D)) +
   geom_point() +
   geom_smooth() + 
-  labs(x="Indicador H4", y="Diversidad alélica el complejo CMH-I")
+  labs(x="Indicador H4", y="D CMH-I")
 
 p5 <- ggplot(data= datos, aes(x= H5, y= D)) +
   geom_point() +
   geom_smooth() + 
-  labs(x="Indicador H5", y="Diversidad alélica el complejo CMH-I")
+  labs(x="Indicador H5", y="D CMH-I")
 ```
 
 
-```{r, echo=TRUE, figures-side, fig.width=8, fig.height=10,fig.show='hold', out.width="50%", dpi = 500, warning= FALSE,message=FALSE}
+```{r plo1, echo=TRUE, warning= FALSE, message=FALSE}
 
-grid.arrange(p1, p2, p3, p4, p5)
+grid.arrange(p1, p2, p3, p4, p5, ncol= 2, nrow=3)
 
 ```
 
 &nbsp;  
 
-**Fig 1.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio. Las líneas azules representa la tendencia general de los datos para cada indicador y  área sombreada en gris el intervalo de confianza al 95%  
+**Fig 2.** Variación de la diversidad alélica del complejo mayor de histocompatibilidad (CMH) clase I, según los indicadores de degradación presentes en el sitio. Las líneas azules representa la tendencia general de los datos para cada indicador y  área sombreada en gris el intervalo de confianza al 95%  
 
 
 &nbsp;  
@@ -271,15 +267,16 @@ grid.arrange(p1, p2, p3, p4, p5)
 ---
 
 
-### Correccion Modelo 1
+### Corrección Modelo 1. Paula
 
-**Correccion interpretacion** En el ejemplo del Modelo 1 se plantea diferentes modelos en los que se controla por separado por cada una de las variables H (de H1 a H5). Esto puede generar un error en la interpretacion de resultados ya que caemos en la trampa de comparaciones indirectas. 
+**Corrección interpretación** En el ejemplo del Modelo 1 se plantea diferentes modelos en los que se controla por separado por cada una de las variables H (de H1 a H5). Esto puede generar un error en la interpretación de resultados ya que caemos en la trampa de comparaciones indirectas. 
 
-No podemos asumir que las variables H sean diferentes entre si ya que lo mas probable es que todas en conjunto tienen un efecto sobre la diversidad de los alelos. Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H y tambien por la latitud ya que sabemos que tiene un efecto sobre la latitud.
+No podemos asumir que las variables H sean diferentes entre si ya que lo mas probable es que todas en conjunto tienen un efecto sobre la diversidad de los alelos. Para corregir este error se plantea ahora un modelo en el que se controle por todas las variables H y también por la latitud ya que sabemos que tiene un efecto sobre la latitud.
 
 
-## Modelo 2
+## Modelo 2. Paula
 
+&nbsp;
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
@@ -293,7 +290,11 @@ summary(M.2)
 
 ```
 
-**Interpretacion** Los resultados indican que H1, H2 y H4 tienen un efecto significativo sobre la diversidad alelica. Si graficamos los valores estimados vemos que esas tres variables tienen un efecto significativo son las que estan mas alejadas del 0 y que efectivamente su efecto sobre la diversidad alelica es mayor con respecto a las otras dos variables de H.
+&nbsp;
+
+**Interpretación** Los resultados indican que H1, H2 y H4 tienen un efecto significativo sobre la diversidad alélica. Si graficamos los valores estimados vemos que esas tres variables tienen un efecto significativo son las que estan mas alejadas del 0 y que efectivamente su efecto sobre la diversidad alélica es mayor con respecto a las otras dos variables de H.
+
+&nbsp;
 
 
 ```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
@@ -306,9 +307,11 @@ plot_summs(M.2, colors = "darkblue")
 
 ```
 
-Para visualizar mejor estos resultados voy a generar graficos independientes para cada variable H de degradacion
+&nbsp;
 
-```{r, figures-side, fig.width=6, fig.height=4,fig.show='hold', out.width="50%", dpi = 500}
+Para visualizar mejor estos resultados voy a generar gráficos independientes para cada variable H de degradación
+
+```{r, figures-side, fig.width=6, fig.height=4,fig.show='hold', out.width="50%", dpi = 500, warning=FALSE, message=FALSE}
 
 require(ggstance)
 require(piecewiseSEM)
@@ -326,10 +329,21 @@ effect_plot(M.2, pred = L, interval = TRUE, plot.points = TRUE)
 
 ```
 
+&nbsp;
+
+**Figura 3.**Modelo 2.Tamaño de efecto
+
+&nbsp;
+
 
 **Nota** Un problema con este modelo es que toma a cada variable independientemente, y es necesario hacer la interaccion. Por lo tanto voy a descartar este modelo para poder tomar en cuenta la interaccion entre todas las variables de degradacion H. 
 
-## Modelo 3
+&nbsp;
+
+## Modelo 3. Paula
+
+&nbsp;
+
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
@@ -339,10 +353,13 @@ summary(M.3)
 
 ```
 
-**Interpretacion** Estos resultados tienen sentido porque ademas al hacer la interaccion ya encontramos una influencia significativa de la Latitud (L) sobre la  diversidad alelica. La interaccion de todos losH presenta un valor de p en el que podemos afirmar que la degradacion afecta la diversidad alelica. 
+&nbsp;
+
+**Interpretación** Estos resultados tienen sentido porque además al hacer la interacción ya encontramos una influencia significativa de la Latitud (L) sobre la  diversidad alélica. La interacción de todos los H presenta un valor de p en el que podemos afirmar que la degradación afecta la diversidad alélica. 
 
 Si graficamos los estimados entonces obtenemos lo siguiente:
 
+&nbsp;
 
 
 ```{r, echo=TRUE, fig.align='center', fig.width=10, fig.height=6,fig.show='hold', dpi = 500}
@@ -350,14 +367,19 @@ Si graficamos los estimados entonces obtenemos lo siguiente:
 plot_summs(M.3, colors = "darkBlue", plot.distributions = TRUE)
 
 ```
+&nbsp;
 
+**Figura 4.** Tamaño de efecto y distribución
 
-### **Conclusion** Segun este modelo la latitud (L) y la interaccion de las variables H tiene una influencia sobre la diversidad alelica. 
+&nbsp;
 
+Según este modelo la latitud (L) y la interacción de las variables H tiene una influencia sobre la diversidad alélica. 
+
+---
 
 ### Correción modelo 3. Andrea
 
-Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (fig. 1).
+Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (figura. 5).
 
 &nbsp;
 
@@ -379,7 +401,7 @@ head(datos)
 ```
 
 
-```{r grafico D vs degradacion, echo=FALSE, message=FALSE, warning=FALSE}
+```{r gráfico D vs degradación, echo=FALSE, message=FALSE, warning=FALSE}
 ## preparacion de los datos para hacer los graficos
 datos$P <- as.factor(datos$P)
 datos$A <- as.factor(datos$A)
@@ -395,11 +417,11 @@ ggplot(datos, aes(degradacion, D )) +
 
 
 
-Fig 1. Variación de la diversidad alélica (D), según la degradación presente en el sitio. La línea negra representa la tendencia general de los datos y la banda sombreada el intervalo de confianza al 95%.
+**Figura 5**. Variación de la diversidad alélica (D), según la degradación presente en el sitio. La línea negra representa la tendencia general de los datos y la banda sombreada el intervalo de confianza al 95%.
 
 &nbsp;
 
-El modelo 3 está incorrecto, ya que presenta la trampa estadística de **inflación de N**, al asumir que todos los datos son parte de la misma muestra. El modelo correcto se lleva a cabo usando la variable **degradación** y la latitud (**L**) como variables predictoras de efectos fijos. Sin embargo, para que el modelo permita observar la variación atribuida a la degradación sin que se vea enmascarada por la variación dada por la población a la que pertenece cada indiviuo (fig. 2) o al año en que fueron tomados estos datos, es necesario incluir ambas (i.e. **P** y **A**) como variables de efectos aleatorios. 
+El modelo 3 está incorrecto, ya que presenta la trampa estadística de **inflación de N**, al asumir que todos los datos son parte de la misma muestra. El modelo correcto se lleva a cabo usando la variable **degradación** y la latitud (**L**) como variables predictoras de efectos fijos. Sin embargo, para que el modelo permita observar la variación atribuida a la degradación sin que se vea enmascarada por la variación dada por la población a la que pertenece cada indiviuo (figura.6) o al año en que fueron tomados estos datos, es necesario incluir ambas (i.e. **P** y **A**) como variables de efectos aleatorios. 
 
 
 &nbsp;
@@ -412,13 +434,13 @@ ggplot(datos, aes(D, degradacion, color = P)) +
   theme_bw()
 ```
 
-Fig 2. Variación de la diversidad alélica (**D**) según la degradación del sitio (**degradacion**). Cada color representa una población diferente.
+**Figura 6**. Variación de la diversidad alélica (**D**) según la degradación del sitio (**degradacion**). Cada color representa una población diferente.
 
 &nbsp;
 
 Para esto el modelo se plantea de la siguiente manera:
 
-## Modelo 4. Andrea Arriaga
+## Modelo 4. Andrea 
 
 ```{r modelo, warning=FALSE, message=FALSE}
 ## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
