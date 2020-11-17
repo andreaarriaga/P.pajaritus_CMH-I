@@ -13,7 +13,9 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+
 &nbsp;
+
 ```{r setup, include=FALSE}
 library(lme4)
 library(ggplot2)
@@ -29,14 +31,12 @@ Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el
 datos <- read.csv("Datos_tarea4.csv", header = TRUE)
 # str(datos)
 
-
-```
-
 &nbsp;
 
 ```{r}
 # PCA
 Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
+
 
 summary(Hpca)
 
@@ -83,7 +83,6 @@ ggplot(datos, aes(D, degradacion, color = P)) +
   geom_smooth(method = "lm", show.legend = FALSE) + 
   theme_bw()
 
-```
 
 Fig 2. Variación de la diversidad alélica (**D**) según la degradación del sitio (**degradacion**). Cada color representa una población diferente.
 
