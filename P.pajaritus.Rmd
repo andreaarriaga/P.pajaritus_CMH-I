@@ -1,275 +1,108 @@
 ---
 title: "P.pajaritus_CMH-I"
-author: "Andrea Arriaga-Madrigal, Paula Iturralde y Silvia Chaves"
-date: "`r Sys.Date()`"
+author: "Andrea Arriaga-Madrigal, Paula Iturralde  y Silvia Chaves"
+date:  "`r Sys.Date()`"
 output:
-html_document:
-fig_caption: yes
-number_sections: no
-toc: yes
-toc_depth: 4
-toc_float: yes
-df_print: paged
+  html_document:
+    fig_caption: yes
+    number_sections: no
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    df_print: paged
 editor_options: 
-chunk_output_type: console
---- 
+  chunk_output_type: console
+---
 
+&nbsp;
 
+```{r setup, include=FALSE}
+library(lme4)
+library(ggplot2)
+library(jtools)
+```
 
+### Correción modelo 3
 
+Si se van a incluir las variables predictoras (H1, H2, H3, H4 y H5) juntas en el modelo, una buena forma de reducción de dimensiones es realizar un análisis de componentes principales. De esta forma se puede calcular el eje de mayor variación atribuido a las variables predictoras en conjunto y asignar un valor a cada observación respecto a su distancia a dicho eje. Esta nueva variable resume la variación dada por todas las H en conjunto y va a ser llamada **"degradación"** (fig. 1).
 
+```{r set up, echo=FALSE}
+# setwd("/home/andrea/Documentos/ciencia_replicable/P.pajaritus_CMH-I")
+datos <- read.csv("Datos_tarea4.csv", header = TRUE)
+# str(datos)
 
+&nbsp;
 
+```{r}
+# PCA
+Hpca <- princomp(datos[,c("H1", "H2", "H3", "H4", "H5")])
 
 
+summary(Hpca)
 
+## extrayendo los scrores del primer componente principal para hacerlo una nueva variable que agrupa todas las H
+datos$degradacion <- Hpca$scores[,1]
+```
 
 
+Cuadro 1. Visualización de las primeras seis filas de la base de datos, ahora con la nueva variable "degradación".
+```{r , echo= FALSE}
+head(datos)
+```
 
 
+```{r grafico D vs degradacion, echo=FALSE, message=FALSE, warning=FALSE}
+## preparacion de los datos para hacer los graficos
+datos$P <- as.factor(datos$P)
+datos$A <- as.factor(datos$A)
 
+## calculando el promedio por P
+# prom <- aggregate(D ~ P, FUN = mean, data = datos)
+## grafico con los scores del PC1 (degradacion) como variable predictora
+ggplot(datos, aes(degradacion, D )) +
+  geom_point(alpha = 0.4,  show.legend = FALSE) + 
+  geom_smooth(show.legend = FALSE) +
+   theme_bw()
+```
 
 
 
+Fig 1. Variación de la diversidad alélica (D), según la degradación presente en el sitio. La línea negra representa la tendencia general de los datos y la banda sombreada el intervalo de confianza al 95%.
 
+&nbsp;
 
+El modelo 3 está incorrecto, ya que presenta la trampa estadística de **inflación de N**, al asumir que todos los datos son parte de la misma muestra. El modelo correcto se lleva a cabo usando la variable **degradación** y la latitud (**L**) como variables predictoras de efectos fijos. Sin embargo, para que el modelo permita observar la variación atribuida a la degradación sin que se vea enmascarada por la variación dada por la población a la que pertenece cada indiviuo (fig. 2) o al año en que fueron tomados estos datos, es necesario incluir ambas (i.e. **P** y **A**) como variables de efectos aleatorios. 
 
 
+&nbsp;
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+## dividido por poblacion
+ggplot(datos, aes(D, degradacion, color = P)) +
+  geom_point(alpha = 0.5,  show.legend = FALSE) + 
+  geom_smooth(method = "lm", show.legend = FALSE) + 
+  theme_bw()
 
 
+Fig 2. Variación de la diversidad alélica (**D**) según la degradación del sitio (**degradacion**). Cada color representa una población diferente.
 
+&nbsp;
 
+Para esto el modelo se plantea de la siguiente manera:
 
+## Modelo 4
 
+```{r modelo, warning=FALSE, message=FALSE}
+## Modelo correcto: incluye la poblacion y el año como efecto aleatorio
+ mod1 <- glmer(D ~ degradacion + (1|P) + (1|A) + L, data = datos, family = "poisson")
+ summ(mod1)
+```
 
+&nbsp;
 
+**Interpretación:** Los resultados indican que todos los parámetros de degradación ambiental evaluados (H1, H2, H3, H4, H5), tienen un efecto significativo sobre la diversidad alélica (z = -2.89, p < 0.01) del complejo mayor de histocompatibilidad (CMH) clase I. ## revisar
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+&nbsp;
 
 
 
